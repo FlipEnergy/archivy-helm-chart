@@ -3,7 +3,7 @@
 
 Bare bones helm chart for deploying [Archivy](https://archivy.github.io/) to k8s. Support NFS as persistentVolume.
 
-see [values.yaml](syncthing/values.yaml) for configurations.
+see [values.yaml](archivy/values.yaml) for configurations.
 
 Install using Helm v3:
 
