@@ -1,7 +1,7 @@
 [![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/flipenergy)](https://artifacthub.io/packages/search?repo=flipenergy)
 # Helm chart for deploying Archivy to K8s
 
-Bare bones helm chart for deploying [Archivy](https://archivy.github.io/) to k8s.
+Bare bones helm chart for deploying [Archivy](https://archivy.github.io/) to k8s. Support NFS as persistentVolume.
 
 see [values.yaml](syncthing/values.yaml) for configurations.
 
