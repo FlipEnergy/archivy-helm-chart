@@ -6,6 +6,8 @@ Bare bones helm chart for deploying [Archivy](https://archivy.github.io/) to k8s
 
 see [values.yaml](archivy/values.yaml) for configurations.
 
+The app is configured to use elasticsearch by default but elasticsearch dependency is false. Create a PV and enable elasticsearch to use it.
+
 Install using Helm v3:
 
 ```
