@@ -20,17 +20,32 @@ env:
   ELASTICSEARCH_ENABLED: 1
   ELASTICSEARCH_URL: http://elasticsearch:9200/
 
+# Both persistence must be on for archivy to keep state between deploys
 persistence:
-  volume:
-    enabled: false
-    path: /path/to/hostpath
-    server: myserver
-    storageClass: ''
-    size: 10Gi
-  volumeClaim:
-    enabled: false
-    storageClass: ''
-    size: 10Gi
+  # db stores the config and the database for archivy
+  db:
+    volume:
+      enabled: false
+      path: /path/to/hostpath2
+      server: myserver
+      storageClass: ''
+      size: 1Gi
+    volumeClaim:
+      enabled: false
+      storageClass: ''
+      size: 1Gi
+  # data stores the markdown files for archivy
+  data:
+    volume:
+      enabled: false
+      path: /path/to/hostpath
+      server: myserver
+      storageClass: ''
+      size: 10Gi
+    volumeClaim:
+      enabled: false
+      storageClass: ''
+      size: 10Gi
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -118,7 +133,7 @@ elasticsearch:
     # storageClassName:
     resources:
       requests:
-        storage: 30Gi
+        storage: 10Gi
 
   rbac:
     create: false

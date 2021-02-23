@@ -1,21 +1,45 @@
-{{- if .Values.persistence.volume.enabled }}
+{{- if .Values.persistence.db.volume.enabled }}
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ include "archivy.fullname" . }}
+  name: {{ include "archivy.fullname" . }}-db
   labels:
     {{- include "archivy.labels" . | nindent 4 }}
 spec:
-  {{- if .Values.persistence.volume.storageClass }}
-  storageClassName: {{ .Values.persistence.volume.storageClass | quote }}
+  {{- if .Values.persistence.db.volume.storageClass }}
+  storageClassName: {{ .Values.persistence.db.volume.storageClass | quote }}
   {{- else }}
-  storageClassName: {{ include "archivy.fullname" . }}
+  storageClassName: {{ include "archivy.fullname" . }}-db
   {{- end }}
   capacity:
-    storage: {{ .Values.persistence.volume.size | quote }}
+    storage: {{ .Values.persistence.db.volume.size | quote }}
   accessModes:
     - ReadWriteOnce
   nfs:
-    path: {{ .Values.persistence.volume.path }}
-    server: {{ .Values.persistence.volume.server }}
+    path: {{ .Values.persistence.db.volume.path }}
+    server: {{ .Values.persistence.db.volume.server }}
+{{- end }}
+
+---
+
+{{- if .Values.persistence.data.volume.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "archivy.fullname" . }}-data
+  labels:
+    {{- include "archivy.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.persistence.data.volume.storageClass }}
+  storageClassName: {{ .Values.persistence.data.volume.storageClass | quote }}
+  {{- else }}
+  storageClassName: {{ include "archivy.fullname" . }}-data
+  {{- end }}
+  capacity:
+    storage: {{ .Values.persistence.data.volume.size | quote }}
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: {{ .Values.persistence.data.volume.path }}
+    server: {{ .Values.persistence.data.volume.server }}
 {{- end }}

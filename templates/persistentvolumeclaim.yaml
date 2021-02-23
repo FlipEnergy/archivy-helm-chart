@@ -1,20 +1,43 @@
-{{- if .Values.persistence.volumeClaim.enabled }}
+{{- if .Values.persistence.db.volumeClaim.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "archivy.fullname" . }}
+  name: {{ include "archivy.fullname" . }}-db
   labels:
     {{- include "archivy.labels" . | nindent 4 }}
 spec:
-  {{- if .Values.persistence.volumeClaim.storageClass }}
-  storageClassName: {{ .Values.persistence.volumeClaim.storageClass | quote }}
+  {{- if .Values.persistence.db.volumeClaim.storageClass }}
+  storageClassName: {{ .Values.persistence.db.volumeClaim.storageClass | quote }}
   {{- else }}
-  storageClassName: {{ include "archivy.fullname" . }}
+  storageClassName: {{ include "archivy.fullname" . }}-db
   {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.persistence.volumeClaim.size | quote }}
-  volumeName: {{ include "archivy.fullname" . }}
+      storage: {{ .Values.persistence.db.volumeClaim.size | quote }}
+  volumeName: {{ include "archivy.fullname" . }}-db
+{{- end }}
+
+---
+
+{{- if .Values.persistence.data.volumeClaim.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "archivy.fullname" . }}-data
+  labels:
+    {{- include "archivy.labels" . | nindent 4 }}
+spec:
+  {{- if .Values.persistence.data.volumeClaim.storageClass }}
+  storageClassName: {{ .Values.persistence.data.volumeClaim.storageClass | quote }}
+  {{- else }}
+  storageClassName: {{ include "archivy.fullname" . }}-data
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.data.volumeClaim.size | quote }}
+  volumeName: {{ include "archivy.fullname" . }}-data
 {{- end }}

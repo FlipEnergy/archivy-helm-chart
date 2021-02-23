@@ -28,9 +28,19 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       volumes:
-        - name: {{ include "archivy.fullname" . }}
+        - name: {{ include "archivy.fullname" . }}-config
+          configMap:
+            name: {{ include "archivy.fullname" . }}-config
+        {{- if .Values.persistence.db.volumeClaim.enabled }}
+        - name: {{ include "archivy.fullname" . }}-db
           persistentVolumeClaim:
-            claimName: {{ include "archivy.fullname" . }}
+            claimName: {{ include "archivy.fullname" . }}-db
+        {{- end }}
+        {{- if .Values.persistence.data.volumeClaim.enabled }}
+        - name: {{ include "archivy.fullname" . }}-data
+          persistentVolumeClaim:
+            claimName: {{ include "archivy.fullname" . }}-data
+        {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -43,8 +53,19 @@ spec:
               value: {{ $val | quote }}
             {{- end }}
           volumeMounts:
+            - name: {{ include "archivy.fullname" . }}-config
+              mountPath: /tmp/config.yml
+              subPath: config.yml
+            {{- if .Values.persistence.db.volumeClaim.enabled }}
+            - mountPath: /archivy/.local/share/archivy
+              name: {{ include "archivy.fullname" . }}-db
+            {{- end }}
+            {{- if .Values.persistence.data.volumeClaim.enabled }}
             - mountPath: /archivy/data
-              name: {{ include "archivy.fullname" . }}
+              name: {{ include "archivy.fullname" . }}-data
+            {{- end }}
+          command: ["/bin/sh"]
+          args: ["-c", "mkdir -p /archivy/.local/share/archivy && cp -v /tmp/config.yml /archivy/.local/share/archivy/config.yml && entrypoint.sh run"]
           ports:
             - name: http
               containerPort: 5000
