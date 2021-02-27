@@ -1,4 +1,7 @@
 [![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/flipenergy)](https://artifacthub.io/packages/search?repo=flipenergy)
+
+# This chart is no longer maintained.
+
 # Helm chart for deploying Archivy to K8s
 **Go to artifact hub for versions.**
 
